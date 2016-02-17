@@ -4,15 +4,20 @@ ZK fingerprint Attendance Machine Library for python with a connection to the ne
 
 ## Getting started
 
-Login as admin to attendance machine and set the ip address for example (to 192.168.0.201) and connect the machine with ethernet to your network.
+Login as admin to attendance machine and set the ip address for example (to 192.168.0.201) and connect the machine with ethernet to your network
+
 
 Connect to the machine
 
 ```python
 import sys
-import zklib
+from zklib import zklib
+
 import time
-import zkconst
+from zklib import zkconst
+
+
+
 
 zk = zklib.ZKLib("192.168.0.201", 4370)
 ret = zk.connect()
