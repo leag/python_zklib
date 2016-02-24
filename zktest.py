@@ -44,7 +44,8 @@ if ret == True:
     # print "Clear Admin:", zk.clearAdmin()
     #zk.setUser(uid=61, userid='41', name='Dony Wahyu Isp', password='123456', role=zkconst.LEVEL_ADMIN)
 
-    attendance = zk.getsAtt()
+    
+    attendance = zk.getsAtt('192.168.1.201')
     print "Get Attendance:"
 
     if (attendance):
