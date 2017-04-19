@@ -1,4 +1,5 @@
 from socket import *
+
 import sys
 import select
 import errno
@@ -22,16 +23,27 @@ from zkdevice import *
 from zkuser import *
 from zkattendance import *
 from zktime import *
+from zkprepare import *
+from zkrefreshdata import *
+from zkfreedata import *
+from zkrestart import *
+from zkAtt import *
+from zkDBRrq import *
+from zkRegevent import *
+from zksoapAtt import *
 
 class ZKLib:
     
     def __init__(self, ip, port):
         self.address = (ip, port)
+        self.ip = ip
         self.zkclient = socket(AF_INET, SOCK_DGRAM)
-        self.zkclient.settimeout(3)
+        self.zkclient.settimeout(5)
         self.session_id = 0
         self.userdata = []
         self.attendancedata = []
+        self.datas = []
+        #self.attendancedataa = []
     
     
     def createChkSum(self, p):
@@ -87,7 +99,9 @@ class ZKLib:
         """Checks a returned packet to see if it returned CMD_ACK_OK,
         indicating success"""
         command = unpack('HHHH', reply[:8])[0]
+	
         if command == CMD_ACK_OK:
+            print "CMD_ACK_OK"
             return True
         else:
             return False
@@ -163,3 +177,30 @@ class ZKLib:
     
     def getTime(self):
         return zkgettime(self)
+
+    def prepareData(self):
+        return zkprepare(self)
+
+
+    def refreshData(self):
+        return zkrefreshdata(self)
+
+    def freeData(self):
+        return zkfreedata(self)
+
+    def reboot(self):
+        return zkrestart(self)
+
+    def testatt(self):
+        return zkAtt(self)
+
+    def getData(self):
+        return zkDBRrq(self)
+
+    def regEvent(self):
+        return zkRegevent(self)
+
+    def getsAtt(self, ip):
+        return zksoapAtt(self)
+
+
