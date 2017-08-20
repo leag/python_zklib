@@ -1,11 +1,12 @@
 from struct import pack, unpack
 from datetime import datetime, date
+import binascii
 
 from .zkconst import *
 
 def reverseHex(hexstr):
     tmp = ''
-    for i in reversed( range( len(hexstr)/2 ) ):
+    for i in reversed( range( len(hexstr)//2 ) ):
         tmp += hexstr[i*2:(i*2)+2]
     
     return tmp
@@ -45,6 +46,7 @@ def zkgettime(self):
     try:
         self.data_recv, addr = self.zkclient.recvfrom(1024)
         self.session_id = unpack('HHHH', self.data_recv[:8])[2]
-        return decode_time( int( reverseHex( self.data_recv[8:].encode("hex") ), 16 ) )
-    except:
-        return False
+        return decode_time( int( reverseHex( binascii.hexlify(self.data_recv[8:]).decode("ascii")), 16 ) )
+     except Exception as e:
+         print(e)
+         return False
