@@ -1,7 +1,7 @@
 from struct import pack, unpack
 from datetime import datetime, date
 
-from zkconst import *
+from .zkconst import *
 
 def getSizeUser(self):
     """Checks a returned packet to see if it returned CMD_PREPARE_DATA,
@@ -66,7 +66,7 @@ def zkgetuser(self):
         users = {}
         if len(self.userdata) > 0:
             # The first 4 bytes don't seem to be related to the user
-            for x in xrange(len(self.userdata)):
+            for x in range(len(self.userdata)):
                 if x > 0:
                     self.userdata[x] = self.userdata[x][8:]
             
@@ -81,10 +81,10 @@ def zkgetuser(self):
                 uid = int( uid.encode("hex"), 16)
                 # Clean up some messy characters from the user name
                 password = password.split('\x00', 1)[0]
-                password = unicode(password.strip('\x00|\x01\x10x'), errors='ignore')
+                password = str(password.strip('\x00|\x01\x10x'), errors='ignore')
                 
                 #uid = uid.split('\x00', 1)[0]
-                userid = unicode(userid.strip('\x00|\x01\x10x'), errors='ignore')
+                userid = str(userid.strip('\x00|\x01\x10x'), errors='ignore')
                 
                 name = name.split('\x00', 1)[0]
                 
