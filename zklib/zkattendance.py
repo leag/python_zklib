@@ -1,7 +1,7 @@
 from struct import pack, unpack
 from datetime import datetime, date
 
-from zkconst import *
+from .zkconst import *
 import xml.etree.cElementTree as et
 
 import pprint
@@ -16,9 +16,9 @@ def getSizeAttendance(self):
     #file = open("binw", "w")
     #file.write(command)
     if command == CMD_PREPARE_DATA:
-        print command
+        print(command)
         size = unpack('I', self.data_recv[8:12])[0]
-        print "size:"
+        print("size:")
         pp.pprint(size)
         return size
     else:
@@ -27,7 +27,7 @@ def getSizeAttendance(self):
 
 def reverseHex(hexstr):
     tmp = ''
-    for i in reversed( xrange( len(hexstr)/2 ) ):
+    for i in reversed( range( len(hexstr)/2 ) ):
         tmp += hexstr[i*2:(i*2)+2]
     
     return tmp
@@ -43,7 +43,7 @@ def zkgetattendance(self):
     session_id = self.session_id
     reply_id = unpack('HHHH', self.data_recv[:8])[3]
     #file.write(self.data_recv[0:])
-    print "reply_id", reply_id
+    print("reply_id", reply_id)
 
     buf = self.createHeader(command, chksum, session_id,
         reply_id, command_string)
@@ -69,7 +69,7 @@ def zkgetattendance(self):
         attendance = []  
         if len(self.attendancedata) > 0:
             # The first 4 bytes don't seem to be related to the user
-            for x in xrange(len(self.attendancedata)):
+            for x in range(len(self.attendancedata)):
                 if x > 0:
                     self.attendancedata[x] = self.attendancedata[x][8:]
             
@@ -92,7 +92,7 @@ def zkgetattendance(self):
                 # Clean up some messy characters from the user name
                 #uid = unicode(uid.strip('\x00|\x01\x10x'), errors='ignore')
                 uid = uid.split('\x00', 1)[0]
-                print "%s, %s, %s" % (uid, ord(pls), decode_time( int( reverseHex( timestamp.encode('hex') ), 16 ) ) )
+                print("%s, %s, %s" % (uid, ord(pls), decode_time( int( reverseHex( timestamp.encode('hex') ), 16 ) ) ))
                 
                 attendance.append( ( uid, int( state.encode('hex'), 16), decode_time( int( reverseHex( timestamp.encode('hex') ), 16 ) ) ) )
                 
